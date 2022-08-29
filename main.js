@@ -2,7 +2,42 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
+const newObj = {
+  [EMPTY_HEART] : FULL_HEART,
+  [FULL_HEART] : EMPTY_HEART
+}
+const colorObj = {
+  "" : "red",
+  "red" : ""
+}
+document.addEventListener("DOMContentLoaded", () => {
+  let likeHearts = document.getElementsByClassName("like-glyph")
+  for(let heart of likeHearts){
+    heart.addEventListener("click", likePost)
+  }
+} )
+
+
 // Your JavaScript code goes here!
+function likePost(e) {
+  let heartButton = e.target
+  mimicServerCall()
+  .then((data)=> {
+    alert(data)
+    heartButton.innerText = newObj[heartButton.innerText]
+    heartButton.style.color = colorObj[heartButton.style.color]
+  })
+  .catch((error) => {
+    document.getElementById("modal").removeAttribute("class")
+    let message = document.getElementById("modal-message")
+    message.textContent = error.message
+    setTimeout(() => {
+      document.getElementById("modal").hidden = true
+      
+    }, 3000)
+  })
+}
+
 
 
 
